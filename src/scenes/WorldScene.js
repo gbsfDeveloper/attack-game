@@ -14,8 +14,6 @@ class WorldScene extends Phaser.Scene{
     create(){
         // create the map
         this.playerLookAt = 'down';
-
-
         var map = this.make.tilemap({ key: 'map' });
                 
         // first parameter is the name of the tilemap in tiled
@@ -80,17 +78,6 @@ class WorldScene extends Phaser.Scene{
         this.bullets = this.physics.add.group({
             classType: Bullet
         });
-
-        // where the enemies will be
-        // this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Zone });
-        // for(var i = 0; i < 30; i++) {
-        //     var x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
-        //     var y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
-        //     // parameters are x, y, width, height
-        //     this.spawns.create(x, y, 20, 20);            
-        // }        
-        // add collider
-        // this.physics.add.overlap(this.player, this.spawns, this.onMeetEnemy, false, this);
     }
 
     update(){
@@ -163,26 +150,37 @@ class WorldScene extends Phaser.Scene{
         console.log("HE disparado");
         let y = "";
         let x = "";
+        let bulletVelocityX = 0;
+        let bulletVelocityY = 0;
         if(lookAt === 'right'){
              y = sprite.y;
              x = sprite.x + sprite.displayHeight;
-        }
+             bulletVelocityX = 100;
+             bulletVelocityY = 0;
+            }
         else if(lookAt === 'left'){
              y = sprite.y;
              x = sprite.x - sprite.displayHeight;
+             bulletVelocityX = -100;
+             bulletVelocityY = 0;
         }
         else if(lookAt === 'up'){
              x = sprite.x;
              y = sprite.y - sprite.displayHeight;
+             bulletVelocityX = 0;
+             bulletVelocityY = -100;
         }
         else if(lookAt === 'down'){
              x = sprite.x;
              y = sprite.y + sprite.displayHeight;
+             bulletVelocityX = 0;
+             bulletVelocityY = 100;
         }
 
         const bullet = this.bullets.get(x, y, 'things', 9);
         bullet.setActive(true);
         bullet.setVisible(true);
+        bullet.setVelocity(bulletVelocityX,bulletVelocityY);
         this.add.existing(bullet);
         
         bullet.body.setSize(bullet.width, bullet.height);
