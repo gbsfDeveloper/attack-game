@@ -1,5 +1,6 @@
 import Phaser from '../lib/phaser.js'
 import Bullet from '../game/Bullet.js'
+import {createPlayerAnimations} from '../animations/playerAnimations.js'
 
 class WorldScene extends Phaser.Scene{
 
@@ -13,7 +14,7 @@ class WorldScene extends Phaser.Scene{
 
     create(){
         // create the map
-        this.playerLookAt = 'down';
+        
         var map = this.make.tilemap({ key: 'map' });
                 
         // first parameter is the name of the tilemap in tiled
@@ -24,40 +25,17 @@ class WorldScene extends Phaser.Scene{
         var obstacles = map.createStaticLayer('Obstacles', tiles, 0, 0);
 
         // make all tiles in obstacles collidable
-        obstacles.setCollisionByExclusion([-1]);
-
-        //  animation with key 'left', we don't need left and right as we will use one and flip the sprite
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('player', { frames: [1, 7, 1, 13]}),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        // animation with key 'right'
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('player', { frames: [1, 7, 1, 13] }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'up',
-            frames: this.anims.generateFrameNumbers('player', { frames: [2, 8, 2, 14]}),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'down',
-            frames: this.anims.generateFrameNumbers('player', { frames: [ 0, 6, 0, 12 ] }),
-            frameRate: 10,
-            repeat: -1
-        });        
+        obstacles.setCollisionByExclusion([-1]);    
 
         // our player sprite created through the phycis system
+        this.playerLookAt = 'down';
+        createPlayerAnimations(this.anims);
         this.player = this.physics.add.sprite(50, 100, 'player', 0);
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
-
+        
+        // Enemy
+        this.enemy = this.physics.add.sprite(60, 110, 'player', 21);
+        
         // don't go out of the map
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
@@ -146,8 +124,8 @@ class WorldScene extends Phaser.Scene{
     }
 
     shoot(sprite, lookAt){
-        console.log(lookAt);
-        console.log("HE disparado");
+        // console.log(lookAt);
+        // console.log("HE disparado");
         let y = "";
         let x = "";
         let bulletVelocityX = 0;
