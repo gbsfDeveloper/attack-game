@@ -1,6 +1,7 @@
 import Phaser from '../lib/phaser.js'
 import Bullet from '../game/Bullet.js'
 import {createPlayerAnimations} from '../animations/playerAnimations.js'
+import {createEnemyAnimations} from '../animations/enemyAnimations.js'
 
 class WorldScene extends Phaser.Scene{
 
@@ -35,7 +36,9 @@ class WorldScene extends Phaser.Scene{
         
         // Enemy
         this.enemy = this.physics.add.sprite(60, 110, 'player', 21);
-        
+        createEnemyAnimations(this.anims);
+        this.enemy.anims.play('enemydown', true);
+
         // don't go out of the map
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
