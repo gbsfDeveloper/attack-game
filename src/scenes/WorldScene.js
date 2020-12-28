@@ -1,5 +1,6 @@
 import Phaser from '../lib/phaser.js'
 import Bullet from '../game/Bullet.js'
+import Enemy from '../game/Enemy.js'
 import {createPlayerAnimations} from '../animations/playerAnimations.js'
 import {createEnemyAnimations} from '../animations/enemyAnimations.js'
 
@@ -35,9 +36,13 @@ class WorldScene extends Phaser.Scene{
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
         
         // Enemy
-        this.enemy = this.physics.add.sprite(60, 110, 'player', 21);
+        // this.enemy = this.physics.add.sprite(60, 110, 'player', 21);
         createEnemyAnimations(this.anims);
-        this.enemy.anims.play('enemydown', true);
+
+        this.enemies = this.physics.add.group({
+            classType: Enemy
+        });
+        this.enemy = this.enemies.get(60, 110, 'player', 21);
 
         // don't go out of the map
         this.physics.world.bounds.width = map.widthInPixels;
