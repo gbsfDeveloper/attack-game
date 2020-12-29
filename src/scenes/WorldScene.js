@@ -1,6 +1,7 @@
 import Phaser from '../lib/phaser.js'
 import Bullet from '../game/Bullet.js'
 import Enemy from '../game/Enemy.js'
+import Player from '../game/Player.js'
 import {createPlayerAnimations} from '../animations/playerAnimations.js'
 import {createEnemyAnimations} from '../animations/enemyAnimations.js'
 
@@ -15,12 +16,10 @@ class WorldScene extends Phaser.Scene{
     }
 
     create(){
-        // create the map
+        // --------- MAP
         var map = this.make.tilemap({ key: 'map' });
-                
         // first parameter is the name of the tilemap in tiled
         var tiles = map.addTilesetImage('spritesheet', 'tiles',16,16,1,2);
-
         // creating the layers
         var grass = map.createStaticLayer('Grass', tiles, 0, 0);
         var obstacles = map.createStaticLayer('Obstacles', tiles, 0, 0);
@@ -28,98 +27,38 @@ class WorldScene extends Phaser.Scene{
         // make all tiles in obstacles collidable
         obstacles.setCollisionByExclusion([-1]);    
 
-        // our player sprite created through the phycis system
-        this.playerLookAt = 'down';
+        // --------- PLAYER
         createPlayerAnimations(this.anims);
-        this.player = this.physics.add.sprite(50, 100, 'player', 0);
+        this.players = this.physics.add.group({
+            classType: Player
+        });
+        this.player = this.players.get(50, 100, 'player', 2);
+        this.player.setCollideWorldBounds(true);
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
         
-        // Enemy
-        // this.enemy = this.physics.add.sprite(60, 110, 'player', 21);
+        // --------- ENEMY
         createEnemyAnimations(this.anims);
-
         this.enemies = this.physics.add.group({
             classType: Enemy
         });
-        this.enemy = this.enemies.get(60, 110, 'player', 21);
+        this.enemy = this.enemies.get(50, 100, 'player', 21);
+        this.enemy.body.onWorldBounds = true;
+        this.enemy.setCollideWorldBounds(true);
 
         // don't go out of the map
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
-        this.player.setCollideWorldBounds(true);
-        this.enemy.body.onWorldBounds = true;
-        this.enemy.setCollideWorldBounds(true);
         // don't walk on trees
         this.physics.add.collider(this.player, obstacles);
 
         // limit camera to map
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
-        this.cameras.main.roundPixels = true; // avoid tile bleed
-
-        // user input
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.keyZ = this.input.keyboard.on('keydown-Z', ()=>{this.shoot(this.player, this.playerLookAt)}, this);
-
-        this.bullets = this.physics.add.group({
-            classType: Bullet
-        });
-
-        // this.physics.world.on('worldbounds', ()=>{console.log("HEYYY")});
+        this.cameras.main.roundPixels = true; 
     }
 
     update(){
-        //    this.controls.update(delta);
-
-        this.player.body.setVelocity(0);
-
-        // Horizontal movement
-        if (this.cursors.left.isDown)
-        {
-            this.player.body.setVelocityX(-80);
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.body.setVelocityX(80);
-        }
-
-        // Vertical movement
-        if (this.cursors.up.isDown)
-        {
-            this.player.body.setVelocityY(-80);
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.player.body.setVelocityY(80);
-        }        
-
-        // Update the animation last and give left/right animations precedence over up/down animations
-        if (this.cursors.left.isDown)
-        {
-            this.isLookAt('left');
-            this.player.anims.play('left', true);
-            this.player.flipX = true;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.isLookAt('right');
-            this.player.anims.play('right', true);
-            this.player.flipX = false;
-        }
-        else if (this.cursors.up.isDown)
-        {
-            this.isLookAt('up');
-            this.player.anims.play('up', true);
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.isLookAt('down');
-            this.player.anims.play('down', true);
-        }
-        else
-        {
-            this.player.anims.stop();
-        }
+        
     }
 
     onMeetEnemy(player, zone){
@@ -131,53 +70,6 @@ class WorldScene extends Phaser.Scene{
         // this.cameras.main.shake(300);
         
         // start battle 
-    }
-
-    shoot(sprite, lookAt){
-        // console.log(lookAt);
-        // console.log("HE disparado");
-        let y = "";
-        let x = "";
-        let bulletVelocityX = 0;
-        let bulletVelocityY = 0;
-        if(lookAt === 'right'){
-             y = sprite.y;
-             x = sprite.x + sprite.displayHeight;
-             bulletVelocityX = 100;
-             bulletVelocityY = 0;
-            }
-        else if(lookAt === 'left'){
-             y = sprite.y;
-             x = sprite.x - sprite.displayHeight;
-             bulletVelocityX = -100;
-             bulletVelocityY = 0;
-        }
-        else if(lookAt === 'up'){
-             x = sprite.x;
-             y = sprite.y - sprite.displayHeight;
-             bulletVelocityX = 0;
-             bulletVelocityY = -100;
-        }
-        else if(lookAt === 'down'){
-             x = sprite.x;
-             y = sprite.y + sprite.displayHeight;
-             bulletVelocityX = 0;
-             bulletVelocityY = 100;
-        }
-
-        const bullet = this.bullets.get(x, y, 'things', 9);
-        bullet.setActive(true);
-        bullet.setVisible(true);
-        bullet.setVelocity(bulletVelocityX,bulletVelocityY);
-        this.add.existing(bullet);
-        
-        bullet.body.setSize(bullet.width, bullet.height);
-        this.physics.world.enable(bullet);
-        return bullet;
-    }
-
-    isLookAt(lookAt){
-        this.playerLookAt = lookAt; 
     }
     
 }
