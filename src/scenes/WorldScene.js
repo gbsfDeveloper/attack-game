@@ -54,19 +54,7 @@ class WorldScene extends Phaser.Scene{
 
     update(){
         
-    }
-
-    onMeetEnemy(player, zone){
-        // we move the zone to some other location
-        zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
-        zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
-        
-        // shake the world
-        // this.cameras.main.shake(300);
-        
-        // start battle 
-    }
-    
+    }    
 }
 
 export default WorldScene;
