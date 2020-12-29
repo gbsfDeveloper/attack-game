@@ -43,7 +43,7 @@ class WorldScene extends Phaser.Scene{
         this.enemies = this.physics.add.group({
             classType: Enemy
         });
-        this.enemy = this.enemies.get(50, 100, 'player', 21);
+        this.enemy = this.enemies.get(250, 100, 'player', 21);
         this.enemy.body.onWorldBounds = true;
         this.enemy.setCollideWorldBounds(true);
         

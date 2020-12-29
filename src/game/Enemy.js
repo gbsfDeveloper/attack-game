@@ -8,18 +8,19 @@ const  Directions = {
 }
 class Enemy extends Phaser.Physics.Arcade.Sprite
 {
-    direction = Directions.RIGHT;
+    direction = Directions.LEFT;
     SPEED = 30;
 
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.setScale(1);
-        this.anims.play(`ENEMY${Directions.RIGHT}`, true);
+        // this.anims.play(`ENEMY${Directions.LEFT}`, true);
         scene.physics.world.on('worldbounds', this.changeDirection, this);
         scene.time.addEvent({
             delay:2000,
-            callback:()=>{this.setTimeDirection(scene)},
-            callbackScope:this
+            callback:()=>{this.changeDirection()},
+            callbackScope:this,
+            loop:true
         })
     }
 
@@ -53,16 +54,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
         const random = Math.floor(Math.random() * choiceDirections.length);
         // console.log(random, choiceDirections[random]);
         this.direction = Directions[choiceDirections[random]]
-    }
-
-    setTimeDirection(scene){
-        this.changeDirection();
-        console.log("activado");
-        scene.time.addEvent({
-            delay:2000,
-            callback:()=>{this.setTimeDirection(scene)},
-            callbackScope:this
-        })
     }
 }
 
