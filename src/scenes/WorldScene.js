@@ -22,7 +22,9 @@ class WorldScene extends Phaser.Scene{
         var grass = map.createStaticLayer('Grass', tiles, 0, 0);
         var obstacles = map.createStaticLayer('Obstacles', tiles, 0, 0);
         obstacles.setCollisionByExclusion([-1]);    
-
+        this.physics.world.bounds.width = map.widthInPixels;
+        this.physics.world.bounds.height = map.heightInPixels;
+        
         // --------- PLAYER
         createPlayerAnimations(this.anims);
         this.players = this.physics.add.group({
@@ -40,17 +42,14 @@ class WorldScene extends Phaser.Scene{
         this.enemy = this.enemies.get(50, 100, 'player', 21);
         this.enemy.body.onWorldBounds = true;
         this.enemy.setCollideWorldBounds(true);
-
-        // don't go out of the map
-        this.physics.world.bounds.width = map.widthInPixels;
-        this.physics.world.bounds.height = map.heightInPixels;
-        // don't walk on trees
-        this.physics.add.collider(this.player, obstacles);
-
+        
+        
         // limit camera to map
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.roundPixels = true; 
+        // don't walk on trees
+        this.physics.add.collider(this.player, obstacles);
     }
 
     update(){
