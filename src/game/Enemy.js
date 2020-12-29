@@ -51,7 +51,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
     changeDirection(object){
         const choiceDirections = ["UP", "DOWN", "RIGHT", "LEFT"];
         const random = Math.floor(Math.random() * choiceDirections.length);
-        console.log(random, choiceDirections[random]);
+        // console.log(random, choiceDirections[random]);
         this.direction = Directions[choiceDirections[random]]
     }
 
