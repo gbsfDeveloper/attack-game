@@ -33,6 +33,10 @@ class WorldScene extends Phaser.Scene{
         this.player = this.players.get(50, 100, 'player', 2);
         this.player.setCollideWorldBounds(true);
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
+        // --------- PLAYER CAMERA
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(this.player);
+        this.cameras.main.roundPixels = true; 
         
         // --------- ENEMY
         createEnemyAnimations(this.anims);
@@ -44,11 +48,7 @@ class WorldScene extends Phaser.Scene{
         this.enemy.setCollideWorldBounds(true);
         
         
-        // limit camera to map
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.player);
-        this.cameras.main.roundPixels = true; 
-        // don't walk on trees
+        // --------- COLLISIONS
         this.physics.add.collider(this.player, obstacles);
     }
 
