@@ -16,7 +16,6 @@ class WorldScene extends Phaser.Scene{
 
     create(){
         // create the map
-        
         var map = this.make.tilemap({ key: 'map' });
                 
         // first parameter is the name of the tilemap in tiled
@@ -48,7 +47,8 @@ class WorldScene extends Phaser.Scene{
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
         this.player.setCollideWorldBounds(true);
-
+        this.enemy.body.onWorldBounds = true;
+        this.enemy.setCollideWorldBounds(true);
         // don't walk on trees
         this.physics.add.collider(this.player, obstacles);
 
@@ -64,6 +64,8 @@ class WorldScene extends Phaser.Scene{
         this.bullets = this.physics.add.group({
             classType: Bullet
         });
+
+        // this.physics.world.on('worldbounds', ()=>{console.log("HEYYY")});
     }
 
     update(){
