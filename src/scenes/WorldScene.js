@@ -47,7 +47,6 @@ class WorldScene extends Phaser.Scene{
         this.enemy.body.onWorldBounds = true;
         this.enemy.setCollideWorldBounds(true);
         
-        
         // --------- COLLISIONS
         this.physics.add.collider(this.player, obstacles);
     }

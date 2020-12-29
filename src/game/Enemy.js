@@ -15,10 +15,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
         super(scene, x, y, texture, frame);
         this.setScale(1);
         this.anims.play('enemyright', true);
-        scene.physics.world.on('worldbounds', this.verifyWorldBounds, this);
+        scene.physics.world.on('worldbounds', this.changeDirection, this);
         scene.time.addEvent({
             delay:2000,
-            callback:()=>{this.timeEvent(scene)},
+            callback:()=>{this.setTimeDirection(scene)},
             callbackScope:this
         })
     }
@@ -42,19 +42,19 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
         }
     }
 
-    verifyWorldBounds(object){
+    changeDirection(object){
         const choiceDirections = ["UP", "DOWN", "RIGHT", "LEFT"];
         const random = Math.floor(Math.random() * choiceDirections.length);
         console.log(random, choiceDirections[random]);
         this.direction = Directions[choiceDirections[random]]
     }
 
-    timeEvent(scene){
-        this.verifyWorldBounds();
+    setTimeDirection(scene){
+        this.changeDirection();
         console.log("activado");
         scene.time.addEvent({
             delay:2000,
-            callback:()=>{this.timeEvent(scene)},
+            callback:()=>{this.setTimeDirection(scene)},
             callbackScope:this
         })
     }
