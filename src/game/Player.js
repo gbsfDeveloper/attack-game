@@ -130,18 +130,11 @@ class Player extends Phaser.Physics.Arcade.Sprite
 
     damageToPlayer(obj1, obj2){
         const enemy = obj2;
-        
         const dx = this.x - enemy.x;
         const dy = this.y - enemy.y;
         const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
         this.body.setVelocity(dir.x, dir.y);
         this.hit = 1;
-        // console.log("Lo toque");
-        // console.dir(obj1);
-        // console.dir(obj2);
-    }
-    update(){
-        console.log("xDDDD");
     }
 }
 
