@@ -37,18 +37,22 @@ class WorldScene extends Phaser.Scene{
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.roundPixels = true; 
+        // --------- PLAYER COLLISIONS
+        this.physics.add.collider(this.player, obstacles);
         
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
-            classType: Enemy
+            classType: Enemy,
+            createCallback:(goEnemy)=>{
+                goEnemy.body.onWorldBounds = true;
+                goEnemy.setCollideWorldBounds(true);
+            }
         });
         this.enemy = this.enemies.get(250, 100, 'player', 21);
-        this.enemy.body.onWorldBounds = true;
-        this.enemy.setCollideWorldBounds(true);
+        this.enemy2 = this.enemies.get(200, 150, 'player', 21);
         
-        // --------- COLLISIONS
-        this.physics.add.collider(this.player, obstacles);
+        
     }
 
     update(){
