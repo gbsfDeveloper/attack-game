@@ -12,57 +12,67 @@ class Player extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+        this.hit = 0;
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.keyZ = scene.input.keyboard.on('keydown-Z', ()=>{this.shoot(this, this.lookAt, scene)}, this);
         this.bullets = scene.physics.add.group({
             classType: Bullet
         });
+        scene.physics.add.collider(scene.enemies, this,this.damageToPlayer,undefined,this);
     }
 
     preUpdate(t, dt){
+        // console.log(this.x);
         super.preUpdate(t, dt);
+        
+        if(this.hit >0){
+            ++this.hit;
+            if(this.hit>10){
+                this.hit = 0;
+            }
+            return
+        }
         this.body.setVelocity(0);
 
         // Horizontal movement
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown && !this.cursors.right.isDown)
         {
             this.body.setVelocityX(-80);
         }
-        else if (this.cursors.right.isDown)
+        if (this.cursors.right.isDown && !this.cursors.left.isDown)
         {
             this.body.setVelocityX(80);
         }
-
         // Vertical movement
-        if (this.cursors.up.isDown)
+        if (this.cursors.up.isDown && !this.cursors.down.isDown)
         {
             this.body.setVelocityY(-80);
         }
-        else if (this.cursors.down.isDown)
+        if (this.cursors.down.isDown && !this.cursors.up.isDown)
         {
             this.body.setVelocityY(80);
         }        
 
         // Update the animation last and give left/right animations precedence over up/down animations
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown && !this.cursors.right.isDown)
         {
             this.setLookAt('left');
             this.anims.play('left', true);
             this.flipX = true;
         }
-        else if (this.cursors.right.isDown)
+        else if (this.cursors.right.isDown && !this.cursors.left.isDown)
         {
             this.setLookAt('right');
             this.anims.play('right', true);
             this.flipX = false;
         }
-        else if (this.cursors.up.isDown)
+        else if (this.cursors.up.isDown && !this.cursors.down.isDown)
         {
             this.setLookAt('up');
             this.anims.play('up', true);
         }
-        else if (this.cursors.down.isDown)
+        else if (this.cursors.down.isDown && !this.cursors.up.isDown)
         {
             this.setLookAt('down');
             this.anims.play('down', true);
@@ -75,8 +85,6 @@ class Player extends Phaser.Physics.Arcade.Sprite
     }
 
     shoot(sprite, lookAt, scene){
-        // console.log(lookAt);
-        // console.log("HE disparado");
         let y = "";
         let x = "";
         let bulletVelocityX = 0;
@@ -118,6 +126,19 @@ class Player extends Phaser.Physics.Arcade.Sprite
 
     setLookAt(lookAt){
         this.lookAt = lookAt; 
+    }
+
+    damageToPlayer(obj1, obj2){
+        const enemy = obj2;
+        
+        const dx = this.x - enemy.x;
+        const dy = this.y - enemy.y;
+        const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
+        this.body.setVelocity(dir.x, dir.y);
+        this.hit = 1;
+        // console.log("Lo toque");
+        // console.dir(obj1);
+        // console.dir(obj2);
     }
 }
 

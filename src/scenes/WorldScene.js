@@ -6,7 +6,7 @@ import {createPlayerAnimations} from '../animations/playerAnimations.js'
 import {createEnemyAnimations} from '../animations/enemyAnimations.js'
 
 class WorldScene extends Phaser.Scene{
-
+    hit = 0;
     constructor(){
         super('WorldScene');
     }
@@ -25,21 +25,6 @@ class WorldScene extends Phaser.Scene{
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
         
-        // --------- PLAYER
-        createPlayerAnimations(this.anims);
-        this.players = this.physics.add.group({
-            classType: Player
-        });
-        this.player = this.players.get(50, 100, 'player', 2);
-        this.player.setCollideWorldBounds(true);
-        this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
-        // --------- PLAYER CAMERA
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.player);
-        this.cameras.main.roundPixels = true; 
-        // --------- PLAYER COLLISIONS
-        this.physics.add.collider(this.player, obstacles);
-        
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
@@ -52,12 +37,30 @@ class WorldScene extends Phaser.Scene{
         this.enemy = this.enemies.get(250, 100, 'player', 21);
         this.enemy2 = this.enemies.get(200, 150, 'player', 21);
         
+        // --------- PLAYER
+        createPlayerAnimations(this.anims);
+        this.players = this.physics.add.group({
+            classType: Player
+        });
+        this.player = this.players.get(50, 100, 'player', 2);
+        this.player.setCollideWorldBounds(true);
+        this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
+        // --------- PLAYER CAMERA
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(this.player);
+        this.cameras.main.roundPixels = true; 
         
+        // --------- COLLISIONS
+        // --------- PLAYER COLLISIONS
+        this.physics.add.collider(this.player, obstacles);
     }
 
     update(){
-        
+        if(this.hit>0){
+            return
+        }
     }    
+
 }
 
 export default WorldScene;

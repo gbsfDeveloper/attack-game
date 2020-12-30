@@ -1,6 +1,7 @@
 import Phaser from '../lib/phaser.js'
 
 const  Directions = {
+    IDLE:"IDLE",
     UP:"UP",
     DOWN:"DOWN",
     LEFT:"LEFT",
@@ -8,26 +9,32 @@ const  Directions = {
 }
 class Enemy extends Phaser.Physics.Arcade.Sprite
 {
-    direction = Directions.LEFT;
+    direction = Directions.IDLE;
     SPEED = 30;
 
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.setScale(1);
         // this.anims.play(`ENEMY${Directions.LEFT}`, true);
-        scene.physics.world.on('worldbounds', this.changeDirection, this);
+        scene.physics.world.on('worldbounds', this.attackPlayer, this);
         scene.time.addEvent({
             delay:2000,
-            callback:()=>{this.changeDirection()},
+            callback:()=>{this.attackPlayer()},
             callbackScope:this,
             loop:true
-        })
+        });
+        
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
 
         switch(this.direction){
+            case Directions.IDLE:
+                // this.anims.play(`ENEMY${Directions.LEFT}`, true);
+                this.body.setVelocityX(0);
+                this.body.setVelocityY(0);
+                break;
             case Directions.LEFT:
                 this.anims.play(`ENEMY${Directions.LEFT}`, true);
                 this.body.setVelocityX(-this.SPEED);
@@ -49,12 +56,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
         }
     }
 
+    attackPlayer(){
+        
+    }
+
     changeDirection(object){
         const choiceDirections = ["UP", "DOWN", "RIGHT", "LEFT"];
         const random = Math.floor(Math.random() * choiceDirections.length);
         // console.log(random, choiceDirections[random]);
         this.direction = Directions[choiceDirections[random]]
     }
+
 }
 
 export default Enemy;
