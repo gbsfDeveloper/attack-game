@@ -40,10 +40,13 @@ class WorldScene extends Phaser.Scene{
         // --------- PLAYER
         createPlayerAnimations(this.anims);
         this.players = this.physics.add.group({
-            classType: Player
+            classType: Player,
+            createCallback:(player)=>{
+                // player.body.onWorldBounds = true;
+                player.setCollideWorldBounds(true);
+            }
         });
         this.player = this.players.get(50, 100, 'player', 2);
-        this.player.setCollideWorldBounds(true);
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
         // --------- PLAYER CAMERA
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);

@@ -33,8 +33,8 @@ class Player extends Phaser.Physics.Arcade.Sprite
             }
             return
         }
-        this.body.setVelocity(0);
 
+        this.body.setVelocity(0);
         // Horizontal movement
         if (this.cursors.left.isDown && !this.cursors.right.isDown)
         {
@@ -139,6 +139,9 @@ class Player extends Phaser.Physics.Arcade.Sprite
         // console.log("Lo toque");
         // console.dir(obj1);
         // console.dir(obj2);
+    }
+    update(){
+        console.log("xDDDD");
     }
 }
 
