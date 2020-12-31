@@ -2,6 +2,20 @@ import Phaser from '../lib/phaser.js'
 
 export const createPlayerAnimations = (anims) =>{
     anims.create({
+        key: 'idlelr',
+        frames: anims.generateFrameNumbers('player', { frames: [1, 1, 1, 1]}),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    anims.create({
+        key: 'idleud',
+        frames: anims.generateFrameNumbers('player', { frames: [1, 1, 1, 1]}),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    anims.create({
         key: 'left',
         frames: anims.generateFrameNumbers('player', { frames: [1, 7, 1, 13]}),
         frameRate: 10,

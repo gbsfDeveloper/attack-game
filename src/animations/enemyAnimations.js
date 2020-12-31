@@ -2,6 +2,13 @@ import Phaser from '../lib/phaser.js'
 
 export const createEnemyAnimations = (anims) =>{
     anims.create({
+        key: 'ENEMYIDLE',
+        frames: anims.generateFrameNumbers('player', { frames: [21, 21, 21, 21]}),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    anims.create({
         key: 'ENEMYLEFT',
         frames: anims.generateFrameNumbers('player', { frames: [22, 28, 22, 34]}),
         frameRate: 10,

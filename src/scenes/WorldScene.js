@@ -6,7 +6,6 @@ import {createPlayerAnimations} from '../animations/playerAnimations.js'
 import {createEnemyAnimations} from '../animations/enemyAnimations.js'
 
 class WorldScene extends Phaser.Scene{
-    hit = 0;
     constructor(){
         super('WorldScene');
     }
@@ -56,12 +55,26 @@ class WorldScene extends Phaser.Scene{
         // --------- COLLISIONS
         // --------- PLAYER COLLISIONS
         this.physics.add.collider(this.player, obstacles);
+
+        // --------- TEST AREA AROUND
+        this.ball = this.add.sprite();
+        this.group = this.add.group({key:'things', frameQuantity: 1, frame:9});
+        this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,20); 
+        Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
+        this.tween = this.tweens.addCounter({
+            from: 20,
+            to: 0,
+            duration: 3000,
+            delay: 2000,
+            ease: 'Sine.easeInOut',
+            repeat: -1,
+            yoyo: true
+        });
+        // console.dir(this.circle);
     }
 
     update(){
-        if(this.hit>0){
-            return
-        }
+        Phaser.Actions.RotateAround(this.group.getChildren(), { x: this.player.x, y: this.player.y }, 0.02);
     }    
 
 }

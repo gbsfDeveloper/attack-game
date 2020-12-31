@@ -12,6 +12,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+        this.setTint(0xff0000);
         this.hit = 0;
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -79,7 +80,8 @@ class Player extends Phaser.Physics.Arcade.Sprite
         }
         else
         {
-            this.anims.stop();
+            this.anims.play('idlelr', true);
+            // this.anims.stop();
         }
 
     }
