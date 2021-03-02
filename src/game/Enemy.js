@@ -54,17 +54,23 @@ class Enemy extends Phaser.Physics.Arcade.Sprite
                 this.body.setVelocityY(this.SPEED);
                 break;
         }
+        // this.changeDirection("RIGHT");
     }
 
     attackPlayer(){
         
     }
 
-    changeDirection(object){
+    getWalkDirection(){
+        return this.direction;
+    }
+
+    changeWalkDirection(DIRECTION){
         const choiceDirections = ["UP", "DOWN", "RIGHT", "LEFT"];
         const random = Math.floor(Math.random() * choiceDirections.length);
         // console.log(random, choiceDirections[random]);
-        this.direction = Directions[choiceDirections[random]]
+        // this.direction = Directions[choiceDirections[DIRECTION]]
+        this.direction = Directions[DIRECTION]
     }
 
 }
