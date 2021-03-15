@@ -26,32 +26,17 @@ class WorldScene extends Phaser.Scene{
         this.physics.world.bounds.width = this.map.widthInPixels;
         this.physics.world.bounds.height = this.map.heightInPixels;
         // ---------PATHFINDING
-        this.finder= new EasyStar.js();
-        let map_row_chunk = this.map.width;
+        this.finder = new EasyStar.js();
         var grid = [];
-        var cell = 0; 
-        while(cell < this.map.height){
-            let map_row = this.map.layers[1].data.slice(cell,map_row_chunk);
-            cell = cell + map_row_chunk;
-            grid.push(map_row);// es el "layer" que se utiliza como referencia de por donde puede caminar el usuario
-
+        for(var y = 0; y < this.map.height; y++){
+            var col = [];
+            for(var x = 0; x < this.map.width; x++){
+                col.push(this.getTileID(x,y));
+            }
+            grid.push(col);
         }
-        // console.log(this.map.layers[1]);
-        console.log(grid);
         this.finder.setGrid(grid);
-        // var tileset = this.map.tilesets[0];
-        // var properties = tileset.tileProperties;
-        let acceptableTiles = [0];
-        // for(var i = tileset.firstgid-1; i < tiles.total; i++){ // firstgid and total are fields from Tiled that indicate the range of IDs that the tiles can take in that tileset
-        //     if(!properties.hasOwnProperty(i)) {
-        //         // If there is no property indicated at all, it means it's a walkable tile
-        //         acceptableTiles.push(i+1);
-        //         continue;
-        //     }
-        //     if(!properties[i].collide){acceptableTiles.push(i+1)};
-        // }
-        // console.log(acceptableTiles);
-        this.finder.setAcceptableTiles(acceptableTiles);                       
+        this.finder.setAcceptableTiles([-1]);
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
@@ -123,13 +108,9 @@ class WorldScene extends Phaser.Scene{
 
     }
     getTileID(x,y){
-        var tile = this.map.getTileAt(x, y);
-        if(tile){
-            return tile.index;
-        }
-        else{
-            return 1;
-        }
+        var tile = this.map.getTileAt(x, y, true);
+        console.log(tile.index);
+        return tile.index;
     };
     update(){
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
