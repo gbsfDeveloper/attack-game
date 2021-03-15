@@ -115,7 +115,7 @@ class WorldScene extends Phaser.Scene{
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
         let verifyIfEnemy = Phaser.Geom.Intersects.CircleToCircle(this.circle, this.circleEnemy)
         if(verifyIfEnemy){
-            console.log("Lo toque");
+            // console.log("Lo toque");
             this.enemyGeneratePath(this.enemy,this.player);
             // this.enemy.changeWalkDirection("LEFT");
         }
@@ -126,12 +126,12 @@ class WorldScene extends Phaser.Scene{
         // Phaser.Actions.RotateAround(this.group.getChildren(), { x: this.circle.x, y: this.circle.y }, 0.02);
     }    
 
-    enemyGeneratePath = (enemy,player) =>{
-        var fromX = Math.floor(enemy.x/32);
-        var fromY = Math.floor(enemy.y/32);
-        var toX = Math.floor(player.x/32);
-        var toY = Math.floor(player.y/32);
-        console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+    enemyGeneratePath = (enemy, player) =>{
+        var fromX = Math.floor(this.enemy.x/16);
+        var fromY = Math.floor(this.enemy.y/16);
+        var toX = Math.floor(this.player.x/16);
+        var toY = Math.floor(this.player.y/16);
+        // console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
         this.finder.findPath(fromX, fromY, toX, toY, ( path ) => {
             // console.warn(path);
@@ -146,18 +146,20 @@ class WorldScene extends Phaser.Scene{
     }
 
     enemyPathMove = (enemy, path) =>{
-        console.log(path);
         var tweens = [];
-        for(var i = 0; i < path.length-1; i++){
-            var ex = path[i+1].x;
-            var ey = path[i+1].y;
+        // console.log(path);
+        // console.log(this.map.tileWidth);
+        // console.log(this.map.tileHeight);
+        for(var i = 0; i < path.length - 1; i++){
+            var ex = path[i + 1].x;
+            var ey = path[i + 1].y;
             tweens.push({
                 targets: enemy,
-                x: {value: ex * this.map.tileWidth, duration: 200},
-                y: {value: ey * this.map.tileHeight, duration: 200}
+                x: {value: ex * this.map.tileWidth, duration: 400},
+                y: {value: ey * this.map.tileHeight, duration: 400}
             });
         }
-    
+        console.log(tweens);
         this.tweens.timeline({
             tweens: tweens
         });
