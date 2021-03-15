@@ -36,7 +36,7 @@ class WorldScene extends Phaser.Scene{
             grid.push(col);
         }
         this.finder.setGrid(grid);
-        this.finder.setAcceptableTiles([-1]);
+        this.finder.setAcceptableTiles([-1,0]);
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
@@ -109,7 +109,6 @@ class WorldScene extends Phaser.Scene{
     }
     getTileID(x,y){
         var tile = this.map.getTileAt(x, y, true);
-        console.log(tile.index);
         return tile.index;
     };
     update(){
@@ -127,26 +126,26 @@ class WorldScene extends Phaser.Scene{
         // Phaser.Actions.RotateAround(this.group.getChildren(), { x: this.circle.x, y: this.circle.y }, 0.02);
     }    
 
-    enemyGeneratePath(enemy,player){
+    enemyGeneratePath = (enemy,player) =>{
         var fromX = Math.floor(enemy.x/32);
         var fromY = Math.floor(enemy.y/32);
         var toX = Math.floor(player.x/32);
         var toY = Math.floor(player.y/32);
         console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
 
-        this.finder.findPath(fromX, fromY, toX, toY, function( path ) {
-            console.warn(path);
+        this.finder.findPath(fromX, fromY, toX, toY, ( path ) => {
+            // console.warn(path);
             if (path === null) {
                 console.warn("Path was not found.");
             } else {
-                console.log(path);
-                this.enemyPathMove(player,path);
+                // console.log(path);
+                this.enemyPathMove(enemy, path);
             }
         });
         this.finder.calculate(); // don't forget, otherwise nothing happens
     }
 
-    enemyPathMove(enemy,path){
+    enemyPathMove = (enemy, path) =>{
         console.log(path);
         var tweens = [];
         for(var i = 0; i < path.length-1; i++){
@@ -154,12 +153,12 @@ class WorldScene extends Phaser.Scene{
             var ey = path[i+1].y;
             tweens.push({
                 targets: enemy,
-                x: {value: ex*this.map.tileWidth, duration: 200},
-                y: {value: ey*this.map.tileHeight, duration: 200}
+                x: {value: ex * this.map.tileWidth, duration: 200},
+                y: {value: ey * this.map.tileHeight, duration: 200}
             });
         }
     
-        this.scene.tweens.timeline({
+        this.tweens.timeline({
             tweens: tweens
         });
     }
