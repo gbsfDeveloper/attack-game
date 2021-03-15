@@ -18,7 +18,7 @@ class WorldScene extends Phaser.Scene{
         
         // --------- MAP
         this.map = this.make.tilemap({ key: 'map' });
-        console.log(map);
+        // console.log(map);
         var tiles = this.map.addTilesetImage('tiles', 'tileset',16,16,1,2);
         var grass = this.map.createStaticLayer('floor', tiles, 0, 0);
         var obstacles = this.map.createStaticLayer('obstacles', tiles, 0, 0);
@@ -27,17 +27,17 @@ class WorldScene extends Phaser.Scene{
         this.physics.world.bounds.height = this.map.heightInPixels;
         // ---------PATHFINDING
         this.finder= new EasyStar.js();
-        // var grid = [];
-        //     for(var y = 0; y < this.map.height; y++){
-        //         var col = [];
-        //         for(var x = 0; x < this.map.width; x++){
-        //             // In each cell we store the ID of the tile, which corresponds
-        //             // to its index in the tileset of the map ("ID" field in Tiled)
-        //             col.push(this.getTileID(x,y));
-        //         }
-        //         grid.push(col);
-        //     }
-        let grid = this.map.layers[1]; // es el "layer" que se utiliza como referencia de por donde puede caminar el usuario
+        let map_row_chunk = this.map.width;
+        var grid = [];
+        var cell = 0; 
+        while(cell < this.map.height){
+            let map_row = this.map.layers[1].data.slice(cell,map_row_chunk);
+            cell = cell + map_row_chunk;
+            grid.push(map_row);// es el "layer" que se utiliza como referencia de por donde puede caminar el usuario
+
+        }
+        // console.log(this.map.layers[1]);
+        console.log(grid);
         this.finder.setGrid(grid);
         // var tileset = this.map.tilesets[0];
         // var properties = tileset.tileProperties;
@@ -51,7 +51,7 @@ class WorldScene extends Phaser.Scene{
         //     if(!properties[i].collide){acceptableTiles.push(i+1)};
         // }
         // console.log(acceptableTiles);
-        this.finder.setAcceptableTiles(acceptableTiles);
+        this.finder.setAcceptableTiles(acceptableTiles);                       
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
@@ -166,6 +166,7 @@ class WorldScene extends Phaser.Scene{
     }
 
     enemyPathMove(enemy,path){
+        console.log(path);
         var tweens = [];
         for(var i = 0; i < path.length-1; i++){
             var ex = path[i+1].x;
