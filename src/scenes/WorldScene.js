@@ -37,6 +37,7 @@ class WorldScene extends Phaser.Scene{
         }
         this.finder.setGrid(grid);
         this.finder.setAcceptableTiles([-1,0]);
+        this.manageTweens = {enemy1:false};
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         this.enemies = this.physics.add.group({
@@ -127,42 +128,42 @@ class WorldScene extends Phaser.Scene{
     }    
 
     enemyGeneratePath = (enemy, player) =>{
-        var fromX = Math.floor(this.enemy.x/16);
-        var fromY = Math.floor(this.enemy.y/16);
-        var toX = Math.floor(this.player.x/16);
-        var toY = Math.floor(this.player.y/16);
+        var fromX = Math.floor(enemy.x/this.map.tileWidth);
+        var fromY = Math.floor(enemy.y/this.map.tileWidth);
+        var toX = Math.floor(player.x/this.map.tileWidth);
+        var toY = Math.floor(player.y/this.map.tileWidth);
         // console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-
         this.finder.findPath(fromX, fromY, toX, toY, ( path ) => {
-            // console.warn(path);
             if (path === null) {
                 console.warn("Path was not found.");
             } else {
-                // console.log(path);
                 this.enemyPathMove(enemy, path);
             }
         });
-        this.finder.calculate(); // don't forget, otherwise nothing happens
+        this.finder.calculate();
     }
 
     enemyPathMove = (enemy, path) =>{
-        var tweens = [];
-        // console.log(path);
-        // console.log(this.map.tileWidth);
-        // console.log(this.map.tileHeight);
-        for(var i = 0; i < path.length - 1; i++){
-            var ex = path[i + 1].x;
-            var ey = path[i + 1].y;
-            tweens.push({
-                targets: enemy,
-                x: {value: ex * this.map.tileWidth, duration: 400},
-                y: {value: ey * this.map.tileHeight, duration: 400}
+        if(this.manageTweens.enemy1 === false){
+            this.manageTweens = {...this.manageTweens, enemy1:true}
+            var tweens = [];
+            for(var i = 0; i < path.length - 1; i++){
+                var ex = path[i + 1].x;
+                var ey = path[i + 1].y;
+                tweens.push({
+                    targets: enemy,
+                    x: {value: ex * this.map.tileWidth, duration: 400},
+                    y: {value: ey * this.map.tileHeight, duration: 400}
+                });
+            }
+            let timeline = this.tweens.timeline({
+                tweens:tweens
+            });
+            timeline.on('complete', ()=>{
+                this.manageTweens = {...this.manageTweens, enemy1:false}
             });
         }
-        console.log(tweens);
-        this.tweens.timeline({
-            tweens: tweens
-        });
+
     }
 }
 
