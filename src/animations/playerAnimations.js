@@ -10,7 +10,7 @@ export const createPlayerAnimations = (anims) =>{
 
     anims.create({
         key: 'idleud',
-        frames: anims.generateFrameNumbers('player', { frames: [1, 1, 1, 1]}),
+        frames: anims.generateFrameNumbers('player', { frames: [0, 0, 0, 0]}),
         frameRate: 10,
         repeat: -1
     });

@@ -71,41 +71,16 @@ class WorldScene extends Phaser.Scene{
         this.physics.add.collider(this.player, obstacles);
 
         // --------- TEST AREA AROUND
-        this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
+        // this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
         this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,10); 
-        Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
+        // Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
 
-        this.groupEnemy = this.add.group({key:'things', frameQuantity: 10, frame:60});
+        // this.groupEnemy = this.add.group({key:'things', frameQuantity: 10, frame:60});
+        this.graphics = this.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
         this.circleEnemy = new Phaser.Geom.Circle(this.enemy.x,this.enemy.y,50); 
-        Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
-
-        this.tween = this.tweens.addCounter({
-            from: 20,
-            to: 0,
-            duration: 3000,
-            delay: 2000,
-            ease: 'Sine.easeInOut',
-            repeat: -1,
-            // yoyo: true
-        });
-
-        const graphics = new Phaser.GameObjects.Graphics(this);
-        graphics.lineStyle(5, 0xFF00FF, 1.0);
-        graphics.fillStyle(0xFFFFFF, 1.0);
-        graphics.fillCircle(this.player.x,this.player.y,10);
-        graphics.strokeRect(this.player.x,this.player.y,10);
-        // console.dir(this.circle);
-        graphics.lineStyle(5, 0xFF00FF, 1.0);
-        graphics.fillStyle(0xFFFFFF, 1.0);
-        graphics.fillRect(50, 50, 400, 200);
-        graphics.strokeRect(50, 50, 400, 200);
-
-        graphics.lineStyle(5, 0xFF00FF, 1.0);
-        graphics.beginPath();
-        graphics.moveTo(100, 100);
-        graphics.lineTo(200, 200);
-        graphics.closePath();
-        graphics.strokePath();
+        
+        console.log(this.circleEnemy.diameter); 
+        // Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
 
     }
     getTileID(x,y){
@@ -116,55 +91,16 @@ class WorldScene extends Phaser.Scene{
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
         let verifyIfEnemy = Phaser.Geom.Intersects.CircleToCircle(this.circle, this.circleEnemy)
         if(verifyIfEnemy){
-            // console.log("Lo toque");
-            // this.enemyGeneratePath(this.enemy,this.player);
             this.enemy.enemyGeneratePath(this.player,this);
         }
         this.circle.setPosition(this.player.x, this.player.y);
         this.circleEnemy.setPosition(this.enemy.x, this.enemy.y);
-        Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
-        Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
+        this.graphics.clear();
+        this.graphics.fillCircleShape(this.circleEnemy);
+        // Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
+        // Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
         // Phaser.Actions.RotateAround(this.group.getChildren(), { x: this.circle.x, y: this.circle.y }, 0.02);
     }    
-
-    // enemyGeneratePath = (enemy, player) =>{
-    //     var fromX = Math.floor(enemy.x/this.map.tileWidth);
-    //     var fromY = Math.floor(enemy.y/this.map.tileWidth);
-    //     var toX = Math.floor(player.x/this.map.tileWidth);
-    //     var toY = Math.floor(player.y/this.map.tileWidth);
-    //     // console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-    //     this.finder.findPath(fromX, fromY, toX, toY, ( path ) => {
-    //         if (path === null) {
-    //             console.warn("Path was not found.");
-    //         } else {
-    //             this.enemyPathMove(enemy, path);
-    //         }
-    //     });
-    //     this.finder.calculate();
-    // }
-
-    // enemyPathMove = (enemy, path) =>{
-    //     if(this.manageTweens.enemy1 === false){
-    //         this.manageTweens = {...this.manageTweens, enemy1:true}
-    //         var tweens = [];
-    //         for(var i = 0; i < path.length - 1; i++){
-    //             var ex = path[i + 1].x;
-    //             var ey = path[i + 1].y;
-    //             tweens.push({
-    //                 targets: enemy,
-    //                 x: {value: ex * this.map.tileWidth, duration: 400},
-    //                 y: {value: ey * this.map.tileHeight, duration: 400}
-    //             });
-    //         }
-    //         let timeline = this.tweens.timeline({
-    //             tweens:tweens
-    //         });
-    //         timeline.on('complete', ()=>{
-    //             this.manageTweens = {...this.manageTweens, enemy1:false}
-    //         });
-    //     }
-
-    // }
 }
 
 export default WorldScene;
