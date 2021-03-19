@@ -15,15 +15,17 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.setScale(1);
-        // this.anims.play(`ENEMY${Directions.LEFT}`, true);
-        scene.physics.world.on('worldbounds', this.attackPlayer, this);
-        scene.time.addEvent({
-            delay:2000,
-            callback:()=>{this.attackPlayer()},
-            callbackScope:this,
-            loop:true
-        });
+        // scene.physics.world.on('worldbounds', this.attackPlayer, this);
+        // scene.time.addEvent({
+        //     delay:2000,
+        //     callback:()=>{this.attackPlayer()},
+        //     callbackScope:this,
+        //     loop:true
+        // });
         this.followPlayer = false;
+        // Detection of player
+        this.detection = new Phaser.Geom.Circle(this.x,this.y,50);
+        this.graphics = scene.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
     }
 
     preUpdate(t, dt){
@@ -54,11 +56,17 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
                 this.body.setVelocityY(this.SPEED);
                 break;
         }
-        // this.changeDirection("RIGHT");
+        // Detection of player
+        this.detection.setPosition(this.x, this.y);
+        this.graphics.clear();
+        this.graphics.fillCircleShape(this.detection);
     }
 
-    attackPlayer(){
-        
+    seekPlayer = ( player, playerVision, scene ) =>{
+        let seekPlayer = Phaser.Geom.Intersects.CircleToCircle(playerVision, this.detection);
+        if(seekPlayer){
+            this.enemyGeneratePath(player,scene);
+        }
     }
 
     getWalkDirection(){

@@ -73,14 +73,6 @@ class WorldScene extends Phaser.Scene{
         // --------- TEST AREA AROUND
         // this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
         this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,10); 
-        // Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
-
-        // this.groupEnemy = this.add.group({key:'things', frameQuantity: 10, frame:60});
-        this.graphics = this.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
-        this.circleEnemy = new Phaser.Geom.Circle(this.enemy.x,this.enemy.y,50); 
-        
-        console.log(this.circleEnemy.diameter); 
-        // Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
 
     }
     getTileID(x,y){
@@ -89,17 +81,9 @@ class WorldScene extends Phaser.Scene{
     };
     update(){
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
-        let verifyIfEnemy = Phaser.Geom.Intersects.CircleToCircle(this.circle, this.circleEnemy)
-        if(verifyIfEnemy){
-            this.enemy.enemyGeneratePath(this.player,this);
-        }
+        this.enemy.seekPlayer(this.player,this.circle,this);
+        this.enemy2.seekPlayer(this.player,this.circle,this);
         this.circle.setPosition(this.player.x, this.player.y);
-        this.circleEnemy.setPosition(this.enemy.x, this.enemy.y);
-        this.graphics.clear();
-        this.graphics.fillCircleShape(this.circleEnemy);
-        // Phaser.Actions.PlaceOnCircle(this.group.getChildren(), this.circle);
-        // Phaser.Actions.PlaceOnCircle(this.groupEnemy.getChildren(), this.circleEnemy);
-        // Phaser.Actions.RotateAround(this.group.getChildren(), { x: this.circle.x, y: this.circle.y }, 0.02);
     }    
 }
 
