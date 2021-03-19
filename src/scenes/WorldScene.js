@@ -18,7 +18,6 @@ class WorldScene extends Phaser.Scene{
         
         // --------- MAP
         this.map = this.make.tilemap({ key: 'map' });
-        // console.log(map);
         var tiles = this.map.addTilesetImage('tiles', 'tileset',16,16,1,2);
         var grass = this.map.createStaticLayer('floor', tiles, 0, 0);
         var obstacles = this.map.createStaticLayer('obstacles', tiles, 0, 0);
@@ -49,6 +48,9 @@ class WorldScene extends Phaser.Scene{
         });
         // Lista de posiciones de enemigos
         this.enemyList = [
+            {x:150,y: 100,key: 'player',frame: 21},
+            {x:350,y: 200,key: 'player',frame: 21},
+            {x:250,y: 400,key: 'player',frame: 21},
             {x:250,y: 100,key: 'player',frame: 21},
             {x:300,y: 150,key: 'player',frame: 21},
             {x:400,y: 200,key: 'player',frame: 21}
@@ -85,13 +87,13 @@ class WorldScene extends Phaser.Scene{
         // this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
         this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,10); 
 
-        
-
     }
+
     getTileID(x,y){
         var tile = this.map.getTileAt(x, y, true);
         return tile.index;
     };
+
     update(){
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
         this.allEnemies.map((enemy)=>{
