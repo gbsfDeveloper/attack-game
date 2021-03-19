@@ -24,6 +24,7 @@ class WorldScene extends Phaser.Scene{
         obstacles.setCollisionByExclusion([-1]);    
         this.physics.world.bounds.width = this.map.widthInPixels;
         this.physics.world.bounds.height = this.map.heightInPixels;
+
         // ---------PATHFINDING
         this.finder = new EasyStar.js();
         var grid = [];
@@ -36,6 +37,7 @@ class WorldScene extends Phaser.Scene{
         }
         this.finder.setGrid(grid);
         this.finder.setAcceptableTiles([-1,0]);
+
         // --------- ENEMY
         createEnemyAnimations(this.anims);
         
@@ -46,7 +48,7 @@ class WorldScene extends Phaser.Scene{
                 goEnemy.setCollideWorldBounds(true);
             }
         });
-        // Lista de posiciones de enemigos
+        // --------- Lista de posiciones de enemigos
         this.enemyList = [
             {x:150,y: 100,key: 'player',frame: 21},
             {x:350,y: 200,key: 'player',frame: 21},
@@ -75,8 +77,6 @@ class WorldScene extends Phaser.Scene{
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.roundPixels = true; 
-        
-        // --------- COLLISIONS
         // --------- PLAYER COLLISIONS
         this.physics.add.collider(this.player, obstacles);
     }
@@ -91,8 +91,6 @@ class WorldScene extends Phaser.Scene{
         this.allEnemies.map((enemy)=>{
             return enemy.seekPlayer(this.player,this.player.vision,this);
         });
-        
-        
     }    
 }
 
