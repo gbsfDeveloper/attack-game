@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.keyZ = scene.input.keyboard.on('keydown-Z', ()=>{this.shoot(this, this.lookAt, scene)}, this);
+        this.vision = new Phaser.Geom.Circle(this.x,this.y,10);
         this.bullets = scene.physics.add.group({
             classType: Bullet
         });
@@ -84,6 +85,8 @@ class Player extends Phaser.Physics.Arcade.Sprite
             this.anims.play('idleud', true);
             // this.anims.stop();
         }
+
+        this.vision.setPosition(this.x, this.y);
 
     }
 

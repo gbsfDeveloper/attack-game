@@ -59,9 +59,6 @@ class WorldScene extends Phaser.Scene{
         this.allEnemies = this.enemyList.map((enemy)=>{
             return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
         })
-       
-        // this.enemy = this.enemies.get(250, 100, 'player', 21);
-        // this.enemy2 = this.enemies.get(200, 150, 'player', 21);
         
         // --------- PLAYER
         createPlayerAnimations(this.anims);
@@ -72,7 +69,7 @@ class WorldScene extends Phaser.Scene{
                 player.setCollideWorldBounds(true);
             }
         });
-        this.player = this.players.get(50, 100, 'player', 2);
+        this.player = this.players.get(50, 100, 'player', 2); 
         this.dropItemSprite = this.physics.add.sprite(100, 100, 'things', 9);
         // --------- PLAYER CAMERA
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -82,11 +79,6 @@ class WorldScene extends Phaser.Scene{
         // --------- COLLISIONS
         // --------- PLAYER COLLISIONS
         this.physics.add.collider(this.player, obstacles);
-
-        // --------- TEST AREA AROUND
-        // this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
-        this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,10); 
-
     }
 
     getTileID(x,y){
@@ -97,10 +89,10 @@ class WorldScene extends Phaser.Scene{
     update(){
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
         this.allEnemies.map((enemy)=>{
-            return enemy.seekPlayer(this.player,this.circle,this);
+            return enemy.seekPlayer(this.player,this.player.vision,this);
         });
         
-        this.circle.setPosition(this.player.x, this.player.y);
+        
     }    
 }
 
