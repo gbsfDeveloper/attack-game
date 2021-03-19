@@ -37,9 +37,9 @@ class WorldScene extends Phaser.Scene{
         }
         this.finder.setGrid(grid);
         this.finder.setAcceptableTiles([-1,0]);
-        this.manageTweens = {enemy1:false};
         // --------- ENEMY
         createEnemyAnimations(this.anims);
+        
         this.enemies = this.physics.add.group({
             classType: Enemy,
             createCallback:(goEnemy)=>{
@@ -47,8 +47,19 @@ class WorldScene extends Phaser.Scene{
                 goEnemy.setCollideWorldBounds(true);
             }
         });
-        this.enemy = this.enemies.get(250, 100, 'player', 21);
-        this.enemy2 = this.enemies.get(200, 150, 'player', 21);
+        // Lista de posiciones de enemigos
+        this.enemyList = [
+            {x:250,y: 100,key: 'player',frame: 21},
+            {x:300,y: 150,key: 'player',frame: 21},
+            {x:400,y: 200,key: 'player',frame: 21}
+        ]
+        // Se crean las instacias de enemigos
+        this.allEnemies = this.enemyList.map((enemy)=>{
+            return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
+        })
+       
+        // this.enemy = this.enemies.get(250, 100, 'player', 21);
+        // this.enemy2 = this.enemies.get(200, 150, 'player', 21);
         
         // --------- PLAYER
         createPlayerAnimations(this.anims);
@@ -74,6 +85,8 @@ class WorldScene extends Phaser.Scene{
         // this.group = this.add.group({key:'things', frameQuantity: 10, frame:60});
         this.circle = new Phaser.Geom.Circle(this.player.x,this.player.y,10); 
 
+        
+
     }
     getTileID(x,y){
         var tile = this.map.getTileAt(x, y, true);
@@ -81,8 +94,10 @@ class WorldScene extends Phaser.Scene{
     };
     update(){
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
-        this.enemy.seekPlayer(this.player,this.circle,this);
-        this.enemy2.seekPlayer(this.player,this.circle,this);
+        this.allEnemies.map((enemy)=>{
+            return enemy.seekPlayer(this.player,this.circle,this);
+        });
+        
         this.circle.setPosition(this.player.x, this.player.y);
     }    
 }
