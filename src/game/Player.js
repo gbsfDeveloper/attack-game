@@ -13,6 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+        this.scene = scene;
         this.hit = 0;
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -21,11 +22,17 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.bullets = scene.physics.add.group({
             classType: Bullet
         });
-        scene.physics.add.collider(scene.enemies, this,this.damageToPlayer,undefined,this);
+        
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
+
+        if(this.scene.enemies != undefined){
+            // Daño al tocarlo los proyectiles
+            this.scene.physics.add.collider(this.scene.enemies, this,this.takeDamage,undefined,this);
+        }
+
         if(this.hit >0){
             this.setTint(0xff0000);
             ++this.hit;
@@ -135,7 +142,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.lookAt = lookAt; 
     }
 
-    damageToPlayer(obj1, obj2){
+    takeDamage(obj1, obj2){
         const enemy = obj2;
         const dx = this.x - enemy.x;
         const dy = this.y - enemy.y;

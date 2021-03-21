@@ -14,6 +14,7 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
 
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+        this.scene = scene;
         this.setScale(1);
         // scene.physics.world.on('worldbounds', this.attackPlayer, this);
         // scene.time.addEvent({
@@ -23,13 +24,31 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         //     loop:true
         // });
         this.followPlayer = false;
+        this.hit = 0;
         // Detection of player
         this.detection = new Phaser.Geom.Circle(this.x,this.y,50);
         this.graphics = scene.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
+        
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
+
+        if(this.scene.player.bullets != undefined){
+            // Daño al tocarlo los proyectiles
+            this.scene.physics.add.collider(this.scene.player.bullets, this,this.takeDamage,undefined,this);
+        }
+
+        if(this.hit >0){
+            this.setTint(0xff0000);
+            ++this.hit;
+            if(this.hit>10){
+                this.setTint(0xffffff);
+                this.hit = 0;
+                this.tintFill = false;
+            }
+            return
+        }
 
         switch(this.direction){
             case Directions.IDLE:
@@ -118,6 +137,14 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
             });
         }
 
+    }
+    takeDamage = (obj1, obj2) =>{
+        const player = obj2;
+        const dx = this.x - player.x;
+        const dy = this.y - player.y;
+        const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
+        this.body.setVelocity(dir.x, dir.y);
+        this.hit = 1;
     }
 }
 
