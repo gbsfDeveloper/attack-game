@@ -136,8 +136,8 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
                 this.followPlayer = false;
             });
         }
-
     }
+
     takeDamage = (obj1, obj2) =>{
         const player = obj2;
         const dx = this.x - player.x;
@@ -145,7 +145,9 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
         this.body.setVelocity(dir.x, dir.y);
         this.hit = 1;
+        player.destroy();
     }
+
 }
 
 export default EnemyPFM;
