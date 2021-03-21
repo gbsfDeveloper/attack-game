@@ -90,7 +90,7 @@ class WorldScene extends Phaser.Scene{
         // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
         this.allEnemies.map((enemy)=>{
             return enemy.seekPlayer(this.player,this.player.vision,this);
-        });
+        }); 
     }    
 }
 

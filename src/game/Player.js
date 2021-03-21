@@ -13,7 +13,6 @@ class Player extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
-        // this.setTint(0xff0000);
         this.hit = 0;
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -26,16 +25,18 @@ class Player extends Phaser.Physics.Arcade.Sprite
     }
 
     preUpdate(t, dt){
-        // console.log(this.x);
         super.preUpdate(t, dt);
-        
         if(this.hit >0){
+            this.setTint(0xff0000);
             ++this.hit;
             if(this.hit>10){
+                this.setTint(0xffffff);
                 this.hit = 0;
+                this.tintFill = false;
             }
             return
         }
+        
 
         this.body.setVelocity(0);
         // Horizontal movement
@@ -141,6 +142,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
         this.body.setVelocity(dir.x, dir.y);
         this.hit = 1;
+        
     }
 }
 
