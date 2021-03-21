@@ -15,7 +15,10 @@ class WorldScene extends Phaser.Scene{
     }
 
     create(){
-        
+        let testRDN =  Phaser.Math.RND;
+
+        // console.log(RNDX);
+        // console.log(RDXY);
         // --------- MAP
         this.map = this.make.tilemap({ key: 'map' });
         var tiles = this.map.addTilesetImage('tiles', 'tileset',16,16,1,2);
@@ -67,14 +70,14 @@ class WorldScene extends Phaser.Scene{
             }
         });
         // --------- Lista de posiciones de enemigos
-        this.enemyList = [
-            {x:150,y: 100,key: 'player',frame: 21},
-            {x:350,y: 200,key: 'player',frame: 21},
-            {x:250,y: 400,key: 'player',frame: 21},
-            {x:250,y: 100,key: 'player',frame: 21},
-            {x:300,y: 150,key: 'player',frame: 21},
-            {x:400,y: 200,key: 'player',frame: 21}
-        ]
+        let NoEnemies = Phaser.Math.Between(1, 5);
+       
+        this.enemyList = [];
+        for (let i = 0; i <= NoEnemies; i++) {
+            let RNDX = Phaser.Math.Between(50, 300);
+            let RDXY = Phaser.Math.Between(50, 200);
+            this.enemyList.push({x:RNDX,y: RDXY,key: 'player',frame: 21})
+        } 
         // Se crean las instacias de enemigos
         this.allEnemies = this.enemyList.map((enemy)=>{
             return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
