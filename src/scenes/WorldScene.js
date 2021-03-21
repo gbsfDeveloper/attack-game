@@ -15,10 +15,6 @@ class WorldScene extends Phaser.Scene{
     }
 
     create(){
-        let testRDN =  Phaser.Math.RND;
-
-        // console.log(RNDX);
-        // console.log(RDXY);
         // --------- MAP
         this.map = this.make.tilemap({ key: 'map' });
         var tiles = this.map.addTilesetImage('tiles', 'tileset',16,16,1,2);
