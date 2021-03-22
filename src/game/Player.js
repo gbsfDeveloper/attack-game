@@ -1,5 +1,6 @@
 import Phaser from '../lib/phaser.js'
 import Bullet from '../game/Bullet.js'
+import Weapon from '../game/Weapon.js'
 
 /** @enum {string} */
 const  Directions = {
@@ -17,10 +18,14 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.hit = 0;
         this.lookAt = Directions.DOWN;
         this.cursors = scene.input.keyboard.createCursorKeys();
-        this.keyZ = scene.input.keyboard.on('keydown-Z', ()=>{this.shoot(this, this.lookAt, scene)}, this);
+        this.keyX = scene.input.keyboard.on('keydown-X', ()=>{this.shoot(this, this.lookAt, scene)}, this);
+        this.keyZ = scene.input.keyboard.on('keydown-Z', ()=>{this.attack(this, this.lookAt, scene)}, this);
         this.vision = new Phaser.Geom.Circle(this.x,this.y,10);
         this.bullets = scene.physics.add.group({
             classType: Bullet
+        });
+        this.weapons = scene.physics.add.group({
+            classType: Weapon
         });
         
     }
@@ -96,6 +101,35 @@ class Player extends Phaser.Physics.Arcade.Sprite
 
         this.vision.setPosition(this.x, this.y);
 
+    }
+
+    attack(sprite, lookAt, scene){
+        let y = "";
+        let x = "";
+        if(lookAt === 'right'){
+            y = sprite.y;
+            x = sprite.x + sprite.displayHeight;
+            }
+        else if(lookAt === 'left'){
+            y = sprite.y;
+            x = sprite.x - sprite.displayHeight;
+        }
+        else if(lookAt === 'up'){
+            x = sprite.x;
+            y = sprite.y - sprite.displayHeight;
+        }
+        else if(lookAt === 'down'){
+            x = sprite.x;
+            y = sprite.y + sprite.displayHeight;
+        }
+        const weapon = this.weapons.get(x, y, 'pj_items', 94);
+        weapon.setActive(true);
+        weapon.setVisible(true);
+        scene.add.existing(weapon);
+        weapon.body.setSize(weapon.width, weapon.height);
+        scene.physics.world.enable(weapon);
+        setTimeout(function(){ weapon.destroy() }, 100);
+        return weapon;
     }
 
     shoot(sprite, lookAt, scene){

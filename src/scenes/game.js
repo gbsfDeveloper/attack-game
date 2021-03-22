@@ -13,6 +13,7 @@ class Game extends Phaser.Scene{
         this.load.tilemapTiledJSON('map', 'assets/main-map/map.json');
         // our two characters
         this.load.spritesheet('player', 'assets/RPG_assets.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('pj_items', 'assets/pj_items.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('things', 'assets/things.png', { frameWidth: 16, frameHeight: 16 });
     }
 
