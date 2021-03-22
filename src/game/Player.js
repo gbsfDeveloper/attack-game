@@ -108,23 +108,35 @@ class Player extends Phaser.Physics.Arcade.Sprite
         let x = "";
         if(lookAt === 'right'){
             y = sprite.y;
-            x = sprite.x + sprite.displayHeight;
-            }
+            x = sprite.x + sprite.displayHeight / 2;
+        }
         else if(lookAt === 'left'){
             y = sprite.y;
-            x = sprite.x - sprite.displayHeight;
+            x = sprite.x - sprite.displayHeight / 2;
         }
         else if(lookAt === 'up'){
             x = sprite.x;
-            y = sprite.y - sprite.displayHeight;
+            y = sprite.y - sprite.displayHeight / 2;
         }
         else if(lookAt === 'down'){
             x = sprite.x;
-            y = sprite.y + sprite.displayHeight;
+            y = sprite.y + sprite.displayHeight / 2;
         }
         const weapon = this.weapons.get(x, y, 'pj_items', 94);
         weapon.setActive(true);
         weapon.setVisible(true);
+        if(lookAt === 'right'){
+            weapon.setFlipX(false);
+        }
+        if(lookAt === 'left'){
+            weapon.setFlipX(true);
+        }
+        if(lookAt === 'up'){
+            weapon.setFlipY(false);
+        }
+        if(lookAt === 'down'){
+            weapon.setFlipY(true);
+        }
         scene.add.existing(weapon);
         weapon.body.setSize(weapon.width, weapon.height);
         scene.physics.world.enable(weapon);

@@ -8,7 +8,7 @@ window.GAMEAPP = {
     viewportHeight: 240,
     worldWidth: 320,
     worldHeight: 240,
-    debug:true,
+    debug:false,
     main: function(){
         this.game = new Phaser.Game( config );
     },
