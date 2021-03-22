@@ -79,6 +79,19 @@ class WorldScene extends Phaser.Scene{
             return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
         })
         
+        // ---------- TOUCH CONTROLS
+        this.touch_up = this.physics.add.sprite(50, 175, 'touch_up');
+        this.touch_up.setScale(0.4);
+        this.touch_up.setScrollFactor(0,0);
+        this.touch_down = this.physics.add.sprite(50, 215, 'touch_down');
+        this.touch_down.setScale(0.4);
+        this.touch_down.setScrollFactor(0,0);
+        this.touch_right = this.physics.add.sprite(70, 195, 'touch_right');
+        this.touch_right.setScale(0.4);
+        this.touch_right.setScrollFactor(0,0);
+        this.touch_left = this.physics.add.sprite(30, 195, 'touch_left');
+        this.touch_left.setScale(0.4);
+        this.touch_left.setScrollFactor(0,0);
         
     }
 
@@ -92,6 +105,14 @@ class WorldScene extends Phaser.Scene{
         this.allEnemies.map((enemy)=>{
             return enemy.seekPlayer(this.player,this.player.vision,this);
         }); 
+        // -------- TOUCH EVENTS
+        var pointer = this.input.activePointer;
+        if (pointer.isDown) {
+            var touchX = pointer.x;
+            var touchY = pointer.y;
+            // console.log(touchX,touchY);
+        }
+        
     }    
 }
 
