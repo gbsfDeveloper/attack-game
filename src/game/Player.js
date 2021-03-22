@@ -149,7 +149,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         else
         {
             this.anims.play('idleud', true);
-            // this.anims.stop();
+            this.anims.stop();
         }
 
         this.vision.setPosition(this.x, this.y);
