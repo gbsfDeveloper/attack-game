@@ -27,6 +27,60 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.weapons = scene.physics.add.group({
             classType: Weapon
         });
+
+        // ---------- TOUCH CONTROLS
+        this.touch_up = scene.physics.add.sprite(50, 175, 'touch_up');
+        this.touch_up.setScale(0.4);
+        this.touch_up.setScrollFactor(0,0);
+        this.touch_down = scene.physics.add.sprite(50, 215, 'touch_down');
+        this.touch_down.setScale(0.4);
+        this.touch_down.setScrollFactor(0,0);
+        this.touch_right = scene.physics.add.sprite(70, 195, 'touch_right');
+        this.touch_right.setScale(0.4);
+        this.touch_right.setScrollFactor(0,0);
+        this.touch_left = scene.physics.add.sprite(30, 195, 'touch_left');
+        this.touch_left.setScale(0.4);
+        this.touch_left.setScrollFactor(0,0);
+        this.touch_a = scene.physics.add.sprite(250, 195, 'touch_a');
+        this.touch_a.setScale(0.4);
+        this.touch_a.setScrollFactor(0,0);
+        this.touch_b = scene.physics.add.sprite(290, 195, 'touch_b');
+        this.touch_b.setScale(0.4);
+        this.touch_b.setScrollFactor(0,0);
+        // -------- TOUCH EVENTS
+        this.touch_up.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.cursors.up.isDown = true
+        });
+        this.touch_up.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
+            this.cursors.up.isDown = false;
+        });
+        this.touch_down.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.cursors.down.isDown = true
+        });
+        this.touch_down.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
+            this.cursors.down.isDown = false
+        });
+        this.touch_right.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.cursors.right.isDown = true
+        });
+        this.touch_right.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
+            this.cursors.right.isDown = false
+        });
+        this.touch_left.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.cursors.left.isDown = true
+        });
+        this.touch_left.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
+            this.cursors.left.isDown = false
+        });
+        this.touch_a.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.shoot(this, this.lookAt, scene);
+        });
+        this.touch_b.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            this.attack(this, this.lookAt, scene)
+        });
+    }
+
+    create(){
         
     }
 
@@ -48,7 +102,6 @@ class Player extends Phaser.Physics.Arcade.Sprite
             }
             return
         }
-        
 
         this.body.setVelocity(0);
         // Horizontal movement
