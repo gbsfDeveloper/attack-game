@@ -77,48 +77,7 @@ class WorldScene extends Phaser.Scene{
         // Se crean las instacias de enemigos
         this.allEnemies = this.enemyList.map((enemy)=>{
             return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
-        })
-        
-        // ---------- TOUCH CONTROLS
-        // this.touch_up = this.physics.add.sprite(50, 175, 'touch_up');
-        // this.touch_up.setScale(0.4);
-        // this.touch_up.setScrollFactor(0,0);
-        // this.touch_down = this.physics.add.sprite(50, 215, 'touch_down');
-        // this.touch_down.setScale(0.4);
-        // this.touch_down.setScrollFactor(0,0);
-        // this.touch_right = this.physics.add.sprite(70, 195, 'touch_right');
-        // this.touch_right.setScale(0.4);
-        // this.touch_right.setScrollFactor(0,0);
-        // this.touch_left = this.physics.add.sprite(30, 195, 'touch_left');
-        // this.touch_left.setScale(0.4);
-        // this.touch_left.setScrollFactor(0,0);
-        // this.touch_a = this.physics.add.sprite(250, 195, 'touch_a');
-        // this.touch_a.setScale(0.4);
-        // this.touch_a.setScrollFactor(0,0);
-        // this.touch_b = this.physics.add.sprite(290, 195, 'touch_b');
-        // this.touch_b.setScale(0.4);
-        // this.touch_b.setScrollFactor(0,0);
-        
-        // // -------- TOUCH EVENTS
-        // this.touch_up.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("UP");
-        // });
-        // this.touch_down.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("DOWN");
-        // });
-        // this.touch_right.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("RIGHT");
-        // });
-        // this.touch_left.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("LEFT");
-        // });
-        // this.touch_a.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("A");
-        // });
-        // this.touch_b.setInteractive().on('pointerup', function(pointer, localX, localY, event){
-        //     console.log("B");
-        // });
-        
+        })        
     }
 
     getTileID(x,y){
