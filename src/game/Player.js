@@ -84,14 +84,13 @@ class Player extends Phaser.Physics.Arcade.Sprite
         
     }
 
-    preUpdate(t, dt){
-        super.preUpdate(t, dt);
-
+    update(){
+    
         if(this.scene.enemies != undefined){
             // Daño al tocarlo los proyectiles
             this.scene.physics.add.collider(this.scene.enemies, this,this.takeDamage,undefined,this);
         }
-
+    
         if(this.hit >0){
             this.setTint(0xff0000);
             ++this.hit;
@@ -102,7 +101,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
             }
             return
         }
-
+    
         this.body.setVelocity(0);
         // Horizontal movement
         if (this.cursors.left.isDown && !this.cursors.right.isDown)
@@ -122,7 +121,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         {
             this.body.setVelocityY(80);
         }        
-
+    
         // Update the animation last and give left/right animations precedence over up/down animations
         if (this.cursors.left.isDown && !this.cursors.right.isDown)
         {
@@ -148,14 +147,12 @@ class Player extends Phaser.Physics.Arcade.Sprite
         }
         else
         {
-            this.anims.play('idleud', true);
+            // this.anims.play('idleud', true);
             this.anims.stop();
         }
-
+    
         this.vision.setPosition(this.x, this.y);
-
     }
-
     attack(sprite, lookAt, scene){
         let y = "";
         let x = "";

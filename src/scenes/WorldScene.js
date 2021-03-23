@@ -56,7 +56,7 @@ class WorldScene extends Phaser.Scene{
         this.physics.add.collider(this.player, obstacles);
 
         // --------- ENEMY
-        createEnemyAnimations(this.anims);
+        // createEnemyAnimations(this.anims);
         
         this.enemies = this.physics.add.group({
             classType: Enemy,
@@ -90,6 +90,7 @@ class WorldScene extends Phaser.Scene{
     };
 
     update(){
+        this.player.update();
         // this.actualEnemies
     }    
 }
