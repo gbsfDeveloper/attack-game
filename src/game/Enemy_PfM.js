@@ -34,6 +34,10 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
     preUpdate(t, dt){
         super.preUpdate(t, dt);
 
+        if(this.scene.player){
+            this.seekPlayer(this.scene.player,this.scene.player.vision,this.scene);
+        }
+
         if(this.scene.player.bullets != undefined){
             // Daño al tocarlo los proyectiles
             this.scene.physics.add.collider(this.scene.player.bullets, this,this.takeDamage,undefined,this);

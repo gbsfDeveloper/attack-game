@@ -17,6 +17,7 @@ window.GAMEAPP = {
 
 let config = {
     type:Phaser.AUTO,
+    mode:Phaser.Scale.FIT,
     parent:'content',
     width:320,
     height:240,

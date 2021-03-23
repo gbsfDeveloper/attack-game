@@ -77,7 +77,11 @@ class WorldScene extends Phaser.Scene{
         // Se crean las instacias de enemigos
         this.allEnemies = this.enemyList.map((enemy)=>{
             return this.enemies.get(enemy.x, enemy.y, enemy.key, enemy.frame);
-        })        
+        })       
+        // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
+        // this.actualEnemies = this.allEnemies.map((enemy)=>{
+        //     return enemy.seekPlayer(this.player,this.player.vision,this);
+        // });  
     }
 
     getTileID(x,y){
@@ -86,12 +90,7 @@ class WorldScene extends Phaser.Scene{
     };
 
     update(){
-        // ---------COLLISIONS BETWEEN PLAYER  ENEMIES
-        this.allEnemies.map((enemy)=>{
-            return enemy.seekPlayer(this.player,this.player.vision,this);
-        }); 
-        
-        
+        // this.actualEnemies
     }    
 }
 
