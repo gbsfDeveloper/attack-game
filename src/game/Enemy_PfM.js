@@ -28,24 +28,24 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         // Detection of player
         this.detection = new Phaser.Geom.Circle(this.x,this.y,50);
         this.graphics = scene.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
-        
+        // if(this.scene.player){
+        //     this.seekPlayer(this.scene.player,this.scene.player.vision,this.scene);
+        // }
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
 
-        if(this.scene.player){
-            this.seekPlayer(this.scene.player,this.scene.player.vision,this.scene);
-        }
+        
 
-        if(this.scene.player.bullets != undefined){
-            // Daño al tocarlo los proyectiles
-            this.scene.physics.add.collider(this.scene.player.bullets, this,this.takeDamage,undefined,this);
-        }
-        if(this.scene.player.weapons != undefined){
-            // Daño al tocarlo los proyectiles
-            this.scene.physics.add.collider(this.scene.player.weapons, this,this.takeDamage,undefined,this);
-        }
+        // if(this.scene.player.bullets != undefined){
+        //     // Daño al tocarlo los proyectiles
+        //     this.scene.physics.add.collider(this.scene.player.bullets, this,this.takeDamage,undefined,this);
+        // }
+        // if(this.scene.player.weapons != undefined){
+        //     // Daño al tocarlo los proyectiles
+        //     this.scene.physics.add.collider(this.scene.player.weapons, this,this.takeDamage,undefined,this);
+        // }
 
         if(this.hit >0){
             this.setTint(0xff0000);
@@ -85,8 +85,8 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         }
         // Detection of player
         this.detection.setPosition(this.x, this.y);
-        this.graphics.clear();
-        this.graphics.fillCircleShape(this.detection);
+        // this.graphics.clear();
+        // this.graphics.fillCircleShape(this.detection);
     }
 
     seekPlayer = ( player, playerVision, scene ) =>{

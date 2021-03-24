@@ -153,6 +153,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
     
         this.vision.setPosition(this.x, this.y);
     }
+    
     attack(sprite, lookAt, scene){
         let y = "";
         let x = "";
