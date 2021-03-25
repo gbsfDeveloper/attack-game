@@ -63,6 +63,10 @@ class WorldScene extends Phaser.Scene{
             createCallback:(goEnemy)=>{
                 goEnemy.body.onWorldBounds = true;
                 goEnemy.setCollideWorldBounds(true);
+                // Daño al tocarlo los proyectiles
+                this.physics.add.collider(this.player.bullets, goEnemy,goEnemy.takeDamage,undefined,goEnemy);
+                // Daño al tocarlo los proyectiles
+                this.physics.add.collider(this.player.weapons, goEnemy,goEnemy.takeDamage,undefined,goEnemy);
             }
         });
         // --------- Lista de posiciones de enemigos
