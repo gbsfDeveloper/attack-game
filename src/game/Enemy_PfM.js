@@ -150,13 +150,14 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
     }
 
     takeDamage = (obj1, obj2) =>{
-        const player = obj2;
-        const dx = this.x - player.x;
-        const dy = this.y - player.y;
+        const bullet = obj2;
+        console.log(bullet);
+        const dx = this.x - bullet.x;
+        const dy = this.y - bullet.y;
         const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
         this.body.setVelocity(dir.x, dir.y);
         this.hit = 1;
-        player.destroy();
+        bullet.destroy();
     }
 
 }

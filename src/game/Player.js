@@ -147,7 +147,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
         }
         else
         {
-            // this.anims.play('idleud', true);
+            this.anims.play('idleud', true);
             this.anims.stop();
         }
     
@@ -225,7 +225,7 @@ class Player extends Phaser.Physics.Arcade.Sprite
             bulletVelocityY = 100;
         }
 
-        const bullet = this.bullets.get(x, y, 'things', 9);
+        const bullet = this.bullets.get(x, y, 'pj_items', 40);
         bullet.setActive(true);
         bullet.setVisible(true);
         bullet.setVelocity(bulletVelocityX,bulletVelocityY);
