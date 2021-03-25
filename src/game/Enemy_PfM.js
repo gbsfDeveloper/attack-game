@@ -28,15 +28,20 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         // Detection of player
         this.detection = new Phaser.Geom.Circle(this.x,this.y,50);
         this.graphics = scene.add.graphics({ fillStyle: { color: 0xff0000 , alpha:0.2}});
-        // if(this.scene.player){
-        //     this.seekPlayer(this.scene.player,this.scene.player.vision,this.scene);
-        // }
+        
     }
 
     preUpdate(t, dt){
         super.preUpdate(t, dt);
 
+        // Detection of player
+        this.detection.setPosition(this.x, this.y);
         
+        if(this.scene.player){
+            if(this.followPlayer === false){
+                this.seekPlayer(this.scene.player,this.scene);
+            }
+        }
 
         // if(this.scene.player.bullets != undefined){
         //     // Daño al tocarlo los proyectiles
@@ -53,7 +58,6 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
             if(this.hit>10){
                 this.setTint(0xffffff);
                 this.hit = 0;
-                this.tintFill = false;
             }
             return
         }
@@ -83,14 +87,13 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
                 this.body.setVelocityY(this.SPEED);
                 break;
         }
-        // Detection of player
-        this.detection.setPosition(this.x, this.y);
+        
         // this.graphics.clear();
         // this.graphics.fillCircleShape(this.detection);
     }
 
-    seekPlayer = ( player, playerVision, scene ) =>{
-        let seekPlayer = Phaser.Geom.Intersects.CircleToCircle(playerVision, this.detection);
+    seekPlayer = ( player, scene ) =>{
+        let seekPlayer = Phaser.Geom.Intersects.CircleToCircle(player.vision, this.detection);
         if(seekPlayer){
             this.enemyGeneratePath(player,scene);
         }
