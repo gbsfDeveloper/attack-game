@@ -151,7 +151,6 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
 
     takeDamage = (obj1, obj2) =>{
         const bullet = obj2;
-        console.log(bullet);
         const dx = this.x - bullet.x;
         const dy = this.y - bullet.y;
         const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
