@@ -17,6 +17,13 @@ window.GAMEAPP = {
 
 let config = {
     type:Phaser.AUTO,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 320,
+        height: 240
+    },
     parent:'content',
     width:320,
     height:240,
