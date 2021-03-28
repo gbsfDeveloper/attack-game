@@ -159,6 +159,15 @@ class EnemyPFM extends Phaser.Physics.Arcade.Sprite
         bullet.destroy();
     }
 
+    takeMeeleDamage = (obj1, obj2) =>{
+        const bullet = obj2;
+        const dx = this.x - bullet.x;
+        const dy = this.y - bullet.y;
+        const dir = new Phaser.Math.Vector2(dx,dy).normalize().scale(100);
+        this.body.setVelocity(dir.x, dir.y);
+        this.hit = 1;
+    }
+
 }
 
 export default EnemyPFM;

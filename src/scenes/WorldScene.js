@@ -66,7 +66,7 @@ class WorldScene extends Phaser.Scene{
                 // Daño al tocarlo los proyectiles
                 this.physics.add.collider(this.player.bullets, goEnemy,goEnemy.takeDamage);
                 // Daño al tocarlo los proyectiles
-                this.physics.add.collider(this.player.weapons, goEnemy,goEnemy.takeDamage);
+                this.physics.add.collider(this.player.weapons, goEnemy,goEnemy.takeMeeleDamage);
             }
         });
         // --------- Lista de posiciones de enemigos
