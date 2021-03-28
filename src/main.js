@@ -10,12 +10,12 @@ window.GAMEAPP = {
     worldHeight: 240,
     debug:false,
     main: function(){
-        this.game = new Phaser.Game( config );
+        this.game = new Phaser.Game( window.config );
     },
     state: {},    
 };
 
-let config = {
+window.config = {
     type:Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.FIT,

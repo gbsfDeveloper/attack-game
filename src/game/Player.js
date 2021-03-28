@@ -29,6 +29,8 @@ class Player extends Phaser.Physics.Arcade.Sprite
         });
 
         // ---------- TOUCH CONTROLS
+        // let TOUCH = new Phaser.Input.InputManager(Phaser.Game,{});
+        // console.log(TOUCH);
         this.touch_up = scene.physics.add.sprite(50, 175, 'touch_up');
         this.touch_up.setScale(0.4);
         this.touch_up.setScrollFactor(0,0);
@@ -48,10 +50,16 @@ class Player extends Phaser.Physics.Arcade.Sprite
         this.touch_b.setScale(0.4);
         this.touch_b.setScrollFactor(0,0);
         // -------- TOUCH EVENTS
+        
+        
         this.touch_up.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
+            console.log(scene.input.activePointer);
             this.cursors.up.isDown = true
         });
         this.touch_up.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
+            this.cursors.up.isDown = false;
+        });
+        this.setInteractive().on('pointerup', (pointer, localX, localY, event)=>{
             this.cursors.up.isDown = false;
         });
         this.touch_down.setInteractive().on('pointerdown', (pointer, localX, localY, event)=>{
@@ -101,7 +109,14 @@ class Player extends Phaser.Physics.Arcade.Sprite
             }
             return
         }
-    
+        // ------- TOUCH Desactivado cuando se salga del boton y no se esta pulsando la pantalla
+        if(!this.scene.input.activePointer.isDown){
+            this.cursors.up.isDown = false;
+            this.cursors.down.isDown = false;
+            this.cursors.right.isDown = false;
+            this.cursors.left.isDown = false;
+        }
+
         this.body.setVelocity(0);
         // Horizontal movement
         if (this.cursors.left.isDown && !this.cursors.right.isDown)
